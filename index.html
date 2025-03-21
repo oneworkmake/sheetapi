@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch JSON Response</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 15px;
+            border: 1px solid #ddd;
+            width: 80%;
+            max-width: 800px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>API JSON Response</h1>
+    <pre id="api-data">Loading...</pre>
+
+    <script>
+        // Get query parameters from the URL
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Fetch JSON data from the API
+        async function fetchJsonData() {
+            const sheetName = "getQueryParam("sheetname")";
+
+            if (!sheetName) {
+                document.getElementById("api-data").textContent = 
+                    "Error: Missing 'sheetname' parameter in the URL. Add '?sheetname=yourSheetName' to the URL.";
+                return;
+            }
+
+            const apiUrl = `https://script.google.com/macros/s/AKfycbzeYy4a3amKj2Y7B99G7ZPHL6CFTVIh5MLDrPbCe8fhVwsuWOhEWlD8Vk8Ymi732U-whQ/exec?sheetName=${sheetName}`;
+
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                document.getElementById("api-data").textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                console.error("Error fetching API data:", error);
+                document.getElementById("api-data").textContent = `Error: ${error.message}`;
+            }
+        }
+
+        // Fetch the data when the page loads
+        fetchJsonData();
+    </script>
+</body>
+</html>

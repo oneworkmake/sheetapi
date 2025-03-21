@@ -36,7 +36,7 @@
 
         // Fetch JSON data from the API
         async function fetchJsonData() {
-            const sheetName = "getQueryParam("sheetname")";
+            const sheetName = getQueryParam("sheetname"); // Corrected this line
 
             if (!sheetName) {
                 document.getElementById("api-data").textContent = 
